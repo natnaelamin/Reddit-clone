@@ -14,7 +14,7 @@ export function UserDropdown({userImage}: dropdownProps){
                 <div className="rounded-full flex items-center p-2 lg:px-4 lg:py-2 border gap-x-3">
                     <MenuIcon className="w-6 h-6 lg:w-5 lg:h-5" />
                     <img src={userImage ?? 'https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg'}
-                    alt="user avatar"
+                    alt="avatar"
                     className="h-8 w-8 rounded-full lg:block hidden"/>
                 </div>
             </DropdownMenuTrigger>
