@@ -18,14 +18,17 @@ async function getData(userId: string){
 
 export default async function Settingspage(){
     const {getUser} = getKindeServerSession()
-    const user = getUser()
+    const user = await getUser()
+    console.log(user)
     
         if(!user){
            return redirect("api/auth/login")
         }
         const data = await getData(user.id)
-        return <div>{data?.userName}</div>
+        return (
+            <div>
+                <h1>tired of this shit man. i need to see my username asap</h1>
+                {data?.userName}
+            </div>)
         
-    
-
 }
