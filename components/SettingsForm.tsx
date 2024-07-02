@@ -46,7 +46,6 @@ function SettingsForm({username}:{username: string | null | undefined}) {
       </p>
 
       <Input defaultValue={username ?? undefined} name="username" required className="mt-2" min={2} maxLength={21} />
-      <p>this is username {username}</p>
       <div className="w-full flex justify-end gap-x-5 mt-5">
         <Button variant="secondary" type="button"><Link href="/">Cancel</Link></Button>
         <SubmitButton />
