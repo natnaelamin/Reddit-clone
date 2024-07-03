@@ -46,9 +46,12 @@ function SettingsForm({username}:{username: string | null | undefined}) {
       </p>
 
       <Input defaultValue={username ?? undefined} name="username" required className="mt-2" min={2} maxLength={21} />
+      {state?.status === "error" &&
+      <p className="text-destructive mt-1">{state.message}</p> 
+      }
       <div className="w-full flex justify-end gap-x-5 mt-5">
         <Button variant="secondary" type="button"><Link href="/">Cancel</Link></Button>
-        <SubmitButton />
+        <SubmitButton text="Change username" />
       </div>
     </form>
   )
