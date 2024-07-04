@@ -1,9 +1,13 @@
 import { UpdateSubDescription } from '@/app/Actions'
 import prisma from '@/app/lib/db'
+import SubDescriptionForm from '@/components/subDescriptionForm'
 import { SaveButton } from '@/components/submitButton'
+import { Button } from '@/components/ui/button'
 import { Card, CardHeader } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
+import { Cake } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -51,22 +55,31 @@ async function SubRedditRoute({params}:{params:{id:string}}) {
                     <Link href={`/r/${data?.name}`} className='font-medium'>{data?.name}</Link>
                 </div>
                 {user?.id === data?.userId ? (
-                    <form className='mt-3' action={UpdateSubDescription}>
-                        <input type='hidden' name='subName' value={params.id}/>
-                        <Textarea
-                        placeholder='Create your custom description for your subreddit'
-                        maxLength={100}
-                        name='description'
-                        defaultValue={data?.description ?? undefined}
-                        />
-                        <SaveButton />
-                    </form>
+                  <SubDescriptionForm subName={params.id} description={data?.description}/>  
                 ): (
                     <p className='text-sm font-normal text-secondary-foreground mt-2'>
                     {data?.description}
                 </p>
                 )}
                 
+                <div className='flex items-center gap-x-2 mt-4'>
+                    <Cake className='h-5 w-5 text-muted-foreground'/>
+                    <p className='font-medium text-muted-foreground'>
+                        Created:{" "}
+                        {new Date(data?.createdAt as Date).toLocaleDateString("en-us", {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric"
+                        })}
+                    </p>
+                </div>
+                <Separator className='my-5'/>
+                <Button className='w-full rounded-full' asChild>
+                    <Link href={user?.id ? `/r/${data?.name}/create` : "/api/auth/login"}>
+                    Create Post 
+                    </Link>
+                </Button>
             </div>
         </Card>
       </div>
