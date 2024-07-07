@@ -1,10 +1,14 @@
-import { Card } from "@/components/ui/card"
+import { Card, CardHeader } from "@/components/ui/card"
 import Image from "next/image"
 import pfp from "../../../../public/pfp.png"
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Text, Video } from "lucide-react"
+import { TabsContent } from "@radix-ui/react-tabs"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { TipTapEditor } from "@/components/TipTabEditor"
 
 const rules = [
     {
@@ -44,6 +48,17 @@ function CreatePostRoute({params}:{params:{id: string}}) {
             <TabsTrigger value="post"><Text className="h-4 w-4 mr-2"/> Post</TabsTrigger>
             <TabsTrigger value="image"> <Video className="h-4 w-4 mr-2"/>Image & Video</TabsTrigger>
         </TabsList>
+        <TabsContent value="post">
+            <Card>
+                <form>
+                    <CardHeader>
+                        <Label>Title</Label>
+                        <Input required name="title" placeholder="Title"/>
+                        <TipTapEditor />
+                    </CardHeader>
+                </form>
+            </Card>
+        </TabsContent>
         </Tabs>
       </div>
       <div className="w-[35%]">
