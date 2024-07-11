@@ -13,6 +13,9 @@ import { Label } from "@/components/ui/label"
 import { TipTapEditor } from "@/components/TipTapEditor"
 import { SubmitButton } from "@/components/submitButton"
 import { UploadDropzone } from "@/components/uploadthing"
+import { useState } from "react"
+import { createPost } from "@/app/Actions"
+import {JSONContent} from "@tiptap/react"
 
 const rules = [
     {
@@ -39,6 +42,12 @@ const rules = [
 
 
 function CreatePostRoute({params}:{params:{id: string}}) {
+
+    const [imageUrl, setImageUrl] = useState<null | string>(null);
+    const [json, setJson] = useState<null | JSONContent>(null);
+    const[title, setTitle] = useState<null | string>(null);
+
+    const createPostReddit = createPost.bind(null, {jsonContent: json})
   return (
     <div className="max-w-[1000px] mx-auto flex gap-x-10 mt-4">
       <div className="w-[65%] flex flex-col gap-y-5">
@@ -54,11 +63,13 @@ function CreatePostRoute({params}:{params:{id: string}}) {
         </TabsList>
         <TabsContent value="post">
             <Card>
-                <form>
+                <form action={createPostReddit}>
+                    <Input type="hidden" name="imageUrl" value={imageUrl ?? undefined}/>
+                    <Input type="hidden" name="subName" value={params.id}/>
                     <CardHeader>
                         <Label>Title</Label>
-                        <Input required name="title" placeholder="Title"/>
-                        <TipTapEditor />
+                        <Input required name="title" placeholder="Title" value={title ?? undefined} onChange={(e)=> setTitle(e.target.value)}/>
+                        <TipTapEditor json={json} setJson={setJson} />
                     </CardHeader>
                     <CardFooter>
                         <SubmitButton text="Create Post" /> 
@@ -75,6 +86,7 @@ function CreatePostRoute({params}:{params:{id: string}}) {
                     endpoint="imageUploader"
                     onClientUploadComplete={(res) => {
                         console.log("Files: ", res);
+                        setImageUrl(res[0].url)
                       }}
                       onUploadError={(error: Error)=>{
                         alert("Error");

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import prisma from "./lib/db";
 import { Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import {JSONContent} from "@tiptap/react"
 
 export async function updateUsername(prevState: any, formData: FormData){
     const {getUser} = getKindeServerSession();
@@ -106,4 +107,30 @@ export async function UpdateSubDescription(prevState: any, formData: FormData){
             message: "Sorry something went wrong"
         }
     }
+}
+
+export async function createPost({jsonContent}:{jsonContent:JSONContent | null},
+    formData: FormData){
+    const {getUser} = getKindeServerSession();
+    const user = await getUser()
+
+    if (!user){
+        redirect("/api/auth/login")
+    }
+
+    const title = formData.get("title") as string;
+    const imageUrl = formData.get("imageUrl") as string | null;
+    const subName = formData.get("subName") as string;
+
+    await prisma.post.create({
+        data:{
+            title: title,
+            imageString: imageUrl ?? undefined,
+            subName: subName,
+            userId: user.id,
+            textContent: jsonContent ?? undefined,
+        },
+    });
+
+    return redirect("/")
 }
