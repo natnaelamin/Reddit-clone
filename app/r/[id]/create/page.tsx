@@ -45,7 +45,7 @@ function CreatePostRoute({params}:{params:{id: string}}) {
 
     const [imageUrl, setImageUrl] = useState<null | string>(null);
     const [json, setJson] = useState<null | JSONContent>(null);
-    const[title, setTitle] = useState<null | string>(null);
+    const [title, setTitle] = useState<null | string>(null);
 
     const createPostReddit = createPost.bind(null, {jsonContent: json})
   return (
@@ -80,6 +80,7 @@ function CreatePostRoute({params}:{params:{id: string}}) {
         <TabsContent value="image">
             <Card>
                 <CardHeader>
+                    {imageUrl === null ?
                     <UploadDropzone 
                     className="ut-button:bg-primary ut-button:ut-readying:bg-primary/50 ut-label:text-primary 
                     ut-button:ut-uploading:bg-primary/50 ut-button:ut-uploading:after:bg-primary" 
@@ -91,7 +92,10 @@ function CreatePostRoute({params}:{params:{id: string}}) {
                       onUploadError={(error: Error)=>{
                         alert("Error");
                       }}
-                      />
+                      /> :
+                      <Image src={imageUrl} alt="uploaded image" height={400} width={500}
+                      className="h-80 rounded-lg w-full object-contain"/>
+                      }
                 </CardHeader>
             </Card>
         </TabsContent>
