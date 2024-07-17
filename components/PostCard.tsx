@@ -1,8 +1,9 @@
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, MessageCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import Link from "next/link";
 import Image from "next/image";
+import CopyLink from "./CopyLink";
 
 interface iAppProps {
     title: string;
@@ -55,6 +56,15 @@ return(
                     className="w-full h-full"
                     />
                 )}
+            </div>
+
+            <div className="m-3 flex items-center gap-x-5">
+                <div className="flex items-center gap-x-1">
+                    <MessageCircle className="h-4 w-4 text-muted-foreground"/>
+                    <p className="text-muted-foreground font-medium text-xs">31 comments</p>
+                </div>
+
+                <CopyLink id={id}/>
             </div>
         </div>
     </Card>
