@@ -23,7 +23,17 @@ async function getData(){
         }
       },
       subName: true,
+      Vote:{
+        select:{
+          userId: true,
+          voteType: true,
+          postId: true,
+        }
+      }
     },
+    orderBy:{
+      createdAt: "desc"
+    }
   });
 
   return data;
@@ -43,7 +53,14 @@ const data = await getData();
           jsonContent={post.textContent} 
           subName={post.subName as string} 
           userName={post.User?.userName as string} 
-          imageString={post.imageString}/>
+          imageString={post.imageString}
+          voteCount= {post.Vote.reduce((acc, vote)=>{
+            if(vote.voteType === "UP") return acc + 1;
+            if(vote.voteType === "DOWN") return acc - 1;
+
+            return acc;
+          }, 0)}
+        />
         ))}
       </div>
       <div className="w-[35%]">

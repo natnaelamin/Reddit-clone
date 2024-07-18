@@ -68,7 +68,9 @@ function CreatePostRoute({params}:{params:{id: string}}) {
                     <Input type="hidden" name="subName" value={params.id}/>
                     <CardHeader>
                         <Label>Title</Label>
-                        <Input required name="title" placeholder="Title" value={title ?? undefined} onChange={(e)=> setTitle(e.target.value)}/>
+                        <Input required name="title" 
+                            placeholder="Title" value={title ?? ""} 
+                            onChange={(e)=> setTitle(e.target.value)}/>
                         <TipTapEditor json={json} setJson={setJson} />
                     </CardHeader>
                     <CardFooter>

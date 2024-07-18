@@ -4,6 +4,8 @@ import { Card } from "./ui/card";
 import Link from "next/link";
 import Image from "next/image";
 import CopyLink from "./CopyLink";
+import { handleVote } from "@/app/Actions";
+import { DownVote, UpVote } from "./submitButton";
 
 interface iAppProps {
     title: string;
@@ -12,22 +14,23 @@ interface iAppProps {
     subName: string;
     userName: string;
     imageString: string | null;
+    voteCount: number;
 }
 
-export function PostCard({title, id, jsonContent, subName, userName, imageString}: iAppProps){
+export function PostCard({title, id, jsonContent, subName, userName, imageString, voteCount}: iAppProps){
 return(
     <Card className="flex relative overflow-hidden">
         <div className="flex flex-col items-center gap-y-5 bg-muted p-2">
-            <form>
-                <Button variant="outline" size="sm">
-                    <ArrowUp className="h-4 w-4"/>
-                </Button>
+            <form action={handleVote}>
+                <input type="hidden" name="voteDirection" value="UP" />
+                <input type="hidden" name="postId" value={id} />
+                <UpVote/>
             </form>
-            0
-            <form>
-                <Button variant="outline" size="sm">
-                    <ArrowDown className="h-4 w-4"/>
-                </Button>
+            {voteCount}
+            <form action={handleVote}>
+                <input type="hidden" name="voteDirection" value="DOWN" />
+                <input type="hidden" name="postId" value={id} />
+                <DownVote/>
             </form>
         </div>
 
@@ -42,12 +45,12 @@ return(
 
             <div className="px-2">
                 <Link href="/">
-                <h1 className="font-medium  mt-1 text-lg">{title} </h1>
+                <h1 className="font-medium  mt-1 text-lg">{title}</h1>
                 </Link>
             </div>
 
             <div className="max-h-[300px] overflow-hidden">
-                {imageString && (
+                {imageString ? (
                     <Image
                     src={imageString}
                     alt="post image"
@@ -55,7 +58,7 @@ return(
                     height={300}
                     className="w-full h-full"
                     />
-                )}
+                ): (<p>hello world</p>)}
             </div>
 
             <div className="m-3 flex items-center gap-x-5">
