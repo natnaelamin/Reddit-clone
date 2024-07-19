@@ -6,6 +6,8 @@ import Image from "next/image";
 import CopyLink from "./CopyLink";
 import { handleVote } from "@/app/Actions";
 import { DownVote, UpVote } from "./submitButton";
+import RenderToJson from "./RendertoJson";
+
 
 interface iAppProps {
     title: string;
@@ -58,7 +60,9 @@ return(
                     height={300}
                     className="w-full h-full"
                     />
-                ): (<p>hello world</p>)}
+                ): (
+                    <RenderToJson data={jsonContent}/>
+                )}
             </div>
 
             <div className="m-3 flex items-center gap-x-5">

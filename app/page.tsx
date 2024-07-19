@@ -8,6 +8,8 @@ import Link from "next/link";
 import CreatePostCard from "@/components/CreatePostCard";
 import prisma from "./lib/db";
 import { PostCard } from "@/components/PostCard";
+import { Suspense } from "react";
+import SuspenseCard from "@/components/SuspenseCard";
 
 async function getData(){
   const data = await prisma.post.findMany({
@@ -39,29 +41,15 @@ async function getData(){
   return data;
 }
 
-export default async function Home() {
-const data = await getData();
+export default function Home() {
 
   return (
-    <div className="max-w-[1000px] mx-auto mt-4 flex gap-x-10">
+    <div className="max-w-[1000px] mx-auto mt-4 flex gap-x-10 mb-10">
       <div className="w-[65%] flex flex-col gap-y-5">
         <CreatePostCard/>
-        {data.map((post) =>(
-          <PostCard key={post.id} 
-          title={post.title} 
-          id={post.id} 
-          jsonContent={post.textContent} 
-          subName={post.subName as string} 
-          userName={post.User?.userName as string} 
-          imageString={post.imageString}
-          voteCount= {post.Vote.reduce((acc, vote)=>{
-            if(vote.voteType === "UP") return acc + 1;
-            if(vote.voteType === "DOWN") return acc - 1;
-
-            return acc;
-          }, 0)}
-        />
-        ))}
+        <Suspense fallback={<SuspenseCard />}>
+          <ShowItems />
+        </Suspense>
       </div>
       <div className="w-[35%]">
         <Card>
@@ -94,4 +82,29 @@ const data = await getData();
       
     </div>
   );
+}
+
+
+async function ShowItems(){
+  const data = await getData();
+  return(
+    <>
+        {data.map((post) =>(
+          <PostCard key={post.id} 
+          title={post.title} 
+          id={post.id} 
+          jsonContent={post.textContent} 
+          subName={post.subName as string} 
+          userName={post.User?.userName as string} 
+          imageString={post.imageString}
+          voteCount= {post.Vote.reduce((acc, vote)=>{
+            if(vote.voteType === "UP") return acc + 1;
+            if(vote.voteType === "DOWN") return acc - 1;
+
+            return acc;
+          }, 0)}
+        />
+        ))}
+    </>
+  )
 }
