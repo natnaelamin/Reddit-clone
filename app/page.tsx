@@ -10,6 +10,7 @@ import prisma from "./lib/db";
 import { PostCard } from "@/components/PostCard";
 import { Suspense } from "react";
 import SuspenseCard from "@/components/SuspenseCard";
+import Pagination from "@/components/Pagination";
 
 async function getData(){
   const data = await prisma.post.findMany({
@@ -74,7 +75,6 @@ export default function Home() {
               <Button asChild>
                 <Link href="/r/create">Create Community</Link>
                 </Button>
-
             </div>
           </div>
         </Card>
@@ -105,6 +105,8 @@ async function ShowItems(){
           }, 0)}
         />
         ))}
+
+        <Pagination totalPages={5}/>
     </>
   )
 }
