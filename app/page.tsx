@@ -12,44 +12,49 @@ import { Suspense } from "react";
 import SuspenseCard from "@/components/SuspenseCard";
 import Pagination from "@/components/Pagination";
 
-async function getData(){
-  const data = await prisma.post.findMany({
-    select:{
-      title: true,
-      createdAt: true,
-      textContent: true,
-      id: true,
-      imageString: true,
-      User: {
-        select:{
-          userName: true,
+async function getData(searchParam: string){
+  const [count, data] = await prisma.$transaction([
+    prisma.post.count(),
+    prisma.post.findMany({
+      take: 5,
+      skip: searchParam ?  (Number(searchParam)- 1) * 5 : 0,
+      select:{
+        title: true,
+        createdAt: true,
+        textContent: true,
+        id: true,
+        imageString: true,
+        User: {
+          select:{
+            userName: true,
+          }
+        },
+        subName: true,
+        Vote:{
+          select:{
+            userId: true,
+            voteType: true,
+            postId: true,
+          }
         }
       },
-      subName: true,
-      Vote:{
-        select:{
-          userId: true,
-          voteType: true,
-          postId: true,
-        }
+      orderBy:{
+        createdAt: "desc"
       }
-    },
-    orderBy:{
-      createdAt: "desc"
-    }
-  });
+    }),
+  ])
 
-  return data;
+  return{ data, count};
 }
 
-export default function Home() {
+export default function Home({searchParams}: {searchParams: {page: string}}) {
 
   return (
     <div className="max-w-[1000px] mx-auto mt-4 flex gap-x-10 mb-10">
       <div className="w-[65%] flex flex-col gap-y-5">
         <CreatePostCard/>
         <Suspense fallback={<SuspenseCard />}>
-          <ShowItems />
+          <ShowItems searchParams={searchParams}/>
         </Suspense>
       </div>
       <div className="w-[35%]">
@@ -85,8 +90,9 @@ export default function Home() {
 }
 
 
-async function ShowItems(){
-  const data = await getData();
+async function ShowItems({searchParams}: {searchParams: {page: string}}){
+  const {count, data} = await getData(searchParams.page);
+  console.log(count)
   return(
     <>
         {data.map((post) =>(
@@ -106,7 +112,8 @@ async function ShowItems(){
         />
         ))}
 
-        <Pagination totalPages={5}/>
+        <Pagination totalPages={Math.ceil(count / 5)}/>
     </>
   )
 }
+

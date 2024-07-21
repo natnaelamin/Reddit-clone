@@ -51,7 +51,7 @@ return(
                 </Link>
             </div>
 
-            <div className="max-h-[300px] overflow-hidden">
+            <div className="max-h-[300px] overflow-hidden px-2">
                 {imageString ? (
                     <Image
                     src={imageString}

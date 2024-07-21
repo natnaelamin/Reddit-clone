@@ -4,6 +4,7 @@ import clsx from "clsx"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import {usePathname, useSearchParams } from "next/navigation"
+import { Button } from "./ui/button"
 
 export const genereatePagination = (currentPage: number, totalPages: number) =>{
     if(totalPages <= 7){
@@ -44,7 +45,7 @@ export default function Pagination({totalPages}:{totalPages: number}){
 
     return (
         <div className="w-full flex justify-center">
-            <ArrowLeft direction="left" href={createPageUrl(currentPage - 1)}  />
+            <ArrowLeft direction="left" href={createPageUrl(currentPage - 1)} className="text-lg w-16 mt-2" />
 
 
 
@@ -68,8 +69,9 @@ export default function Pagination({totalPages}:{totalPages: number}){
                     )
                 })}
             </div>
-
-            <ArrowRight direction="right" href={createPageUrl(currentPage + 1)}  />
+            
+            <ArrowRight direction="right" href={createPageUrl(currentPage + 1)}  className="text-lg w-16 mt-2" />
+           
 
         </div>
     )
