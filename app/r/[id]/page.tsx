@@ -1,5 +1,8 @@
 import { UpdateSubDescription } from '@/app/Actions'
 import prisma from '@/app/lib/db'
+import CreatePostCard from '@/components/CreatePostCard'
+import Pagination from '@/components/Pagination'
+import { PostCard } from '@/components/PostCard'
 import SubDescriptionForm from '@/components/subDescriptionForm'
 import { SaveButton } from '@/components/submitButton'
 import { Button } from '@/components/ui/button'
@@ -7,36 +10,85 @@ import { Card, CardHeader } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
-import { Cake } from 'lucide-react'
+import { Cake, Key } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-async function getData(name: string){
-    const data = await prisma.subreddit.findUnique({
-        where:{
-            name: name, 
-        },
-        select:{
-            name: true,
-            createdAt: true,
-            description: true,
-            userId: true,
-        },
-    });
+async function getData(name: string, searchParam: string){
 
-    return data;
+    const [count, data] = await prisma.$transaction([
+        prisma.post.count({
+            where:{
+                subName: name
+            },
+        }),
+
+        prisma.subreddit.findUnique({
+            where:{
+                name: name, 
+            },
+            select:{
+                name: true,
+                createdAt: true,
+                description: true,
+                userId: true,
+                posts:{
+                    take: 5,
+                    skip: searchParam ?  (Number(searchParam)- 1) * 5 : 0,
+                    select:{
+                        title: true,
+                        imageString: true,
+                        id: true,
+                        textContent: true,
+                        Vote: {
+                            select:{
+                                userId: true,
+                                voteType: true,
+                            }
+                        },
+                        User:{ select:{
+                            userName: true,
+                        }}
+                    }
+                },
+                
+            },
+        })
+    ])
+
+    return {data, count};
 }
 
-async function SubRedditRoute({params}:{params:{id:string}}) {
-    const data = await getData(params.id)
+async function SubRedditRoute({params, searchParams}:{params:{id:string}; searchParams:{page: string}}) {
+    const {count, data} = await getData(params.id, searchParams.page);
     const {getUser} = getKindeServerSession()
     const user = await getUser()
 
   return (
     <div className='max-w-[1000px] mx-auto flex gap-x-10 mt-4'>
       <div className='w-[65%] flex flex-col gap-y-5'>
-        <h1>hello from the post section</h1>
+        <CreatePostCard/>
+
+        {data?.posts.map((post) =>(
+            <PostCard 
+            key={post.id}
+            id={post.id}
+            imageString={post.imageString}
+            subName={data.name}
+            title={post.title}
+            userName={post.User?.userName as string}
+            jsonContent={post.textContent}
+            voteCount= {post.Vote.reduce((acc, vote)=>{
+                if(vote.voteType === "UP") return acc + 1;
+                if(vote.voteType === "DOWN") return acc - 1;
+    
+                return acc;
+              }, 0)}
+            />
+        ))} 
+
+        <Pagination totalPages={Math.ceil(count / 5)}/>
       </div>
       <div className='w-[35%]'>
         <Card>

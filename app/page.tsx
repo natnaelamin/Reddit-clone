@@ -53,7 +53,7 @@ export default function Home({searchParams}: {searchParams: {page: string}}) {
     <div className="max-w-[1000px] mx-auto mt-4 flex gap-x-10 mb-10">
       <div className="w-[65%] flex flex-col gap-y-5">
         <CreatePostCard/>
-        <Suspense fallback={<SuspenseCard />}>
+        <Suspense fallback={<SuspenseCard />} key={searchParams.page}>
           <ShowItems searchParams={searchParams}/>
         </Suspense>
       </div>
@@ -92,7 +92,7 @@ export default function Home({searchParams}: {searchParams: {page: string}}) {
 
 async function ShowItems({searchParams}: {searchParams: {page: string}}){
   const {count, data} = await getData(searchParams.page);
-  console.log(count)
+  
   return(
     <>
         {data.map((post) =>(
