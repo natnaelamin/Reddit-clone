@@ -1,7 +1,9 @@
+"use client"
 import { CreateComment } from "@/app/Actions";
 import { SubmitButton } from "./submitButton"
 import { Label } from "./ui/label"
 import { Textarea } from "./ui/textarea"
+import { useRef } from "react";
 
 interface iAppProps{
     postId: string;
@@ -9,10 +11,15 @@ interface iAppProps{
 
 
 function CommentForm({postId}: iAppProps) {
+  const ref = useRef<HTMLFormElement>(null)
+
   return (
-    <form action={CreateComment} className="mt-5">
+    <form action={async (formData) =>{
+      await CreateComment(formData);
+      ref.current?.reset()
+    } } className="mt-5">
         <input type="hidden" name="postId" value={postId} />
-        <Label>Comment as nati</Label>
+        <Label>Comment right here</Label>
         <Textarea
         placeholder="What are your thoughts?"
         name="Comment"

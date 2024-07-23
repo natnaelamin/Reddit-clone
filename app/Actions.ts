@@ -64,7 +64,7 @@ export async function createCommunity(prevState: any, formData: FormData){
                 userId: user.id
             },
         });
-        return redirect("/")
+        return redirect(`/r/${data.name}`)
     } catch(e){
         if(e instanceof PrismaClientKnownRequestError){
             if(e.code === "P2002"){
@@ -124,7 +124,7 @@ export async function createPost({jsonContent}:{jsonContent:JSONContent | null},
     const imageUrl = formData.get("imageUrl") as string | null;
     const subName = formData.get("subName") as string;
 
-    await prisma.post.create({
+    const data = await prisma.post.create({
         data:{
             title: title,
             imageString: imageUrl ?? undefined,
@@ -134,7 +134,7 @@ export async function createPost({jsonContent}:{jsonContent:JSONContent | null},
         },
     });
 
-    return redirect("/")
+    return redirect(`/post/${data.id}`)
 }
 
 

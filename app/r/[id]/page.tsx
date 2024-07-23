@@ -41,6 +41,11 @@ async function getData(name: string, searchParam: string){
                         imageString: true,
                         id: true,
                         textContent: true,
+                        Comment:{
+                            select:{
+                                id: true,
+                            },
+                        },
                         Vote: {
                             select:{
                                 userId: true,
@@ -70,25 +75,32 @@ async function SubRedditRoute({params, searchParams}:{params:{id:string}; search
       <div className='w-[65%] flex flex-col gap-y-5'>
         <CreatePostCard/>
 
-        {data?.posts.map((post) =>(
-            <PostCard 
-            key={post.id}
-            id={post.id}
-            imageString={post.imageString}
-            subName={data.name}
-            title={post.title}
-            userName={post.User?.userName as string}
-            jsonContent={post.textContent}
-            voteCount= {post.Vote.reduce((acc, vote)=>{
-                if(vote.voteType === "UP") return acc + 1;
-                if(vote.voteType === "DOWN") return acc - 1;
-    
-                return acc;
-              }, 0)}
-            />
-        ))} 
+        {data?.posts.length === 0 ? (
+            <p>no posts yet</p>
+        ):(
+            <>
+                {data?.posts.map((post) =>(
+                <PostCard 
+                key={post.id}
+                id={post.id}
+                imageString={post.imageString}
+                subName={data.name}
+                title={post.title}
+                commentAmount={post.Comment.length}
+                userName={post.User?.userName as string}
+                jsonContent={post.textContent}
+                voteCount= {post.Vote.reduce((acc, vote)=>{
+                    if(vote.voteType === "UP") return acc + 1;
+                    if(vote.voteType === "DOWN") return acc - 1;
+        
+                    return acc;
+                }, 0)}
+                />
+                ))} 
 
-        <Pagination totalPages={Math.ceil(count / 5)}/>
+                <Pagination totalPages={Math.ceil(count / 5)}/>
+            </>
+        )}
       </div>
       <div className='w-[35%]'>
         <Card>

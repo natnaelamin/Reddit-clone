@@ -17,9 +17,10 @@ interface iAppProps {
     userName: string;
     imageString: string | null;
     voteCount: number;
+    commentAmount: number;
 }
 
-export function PostCard({title, id, jsonContent, subName, userName, imageString, voteCount}: iAppProps){
+export function PostCard({title, id, jsonContent, subName, userName, imageString, voteCount, commentAmount}: iAppProps){
 return(
     <Card className="flex relative overflow-hidden">
         <div className="flex flex-col items-center gap-y-5 bg-muted p-2">
@@ -42,7 +43,7 @@ return(
                     r/{subName}
                 </Link>
                 <p className="text-muted-foreground text-sm">Posted by:
-                    <span className="hover:text-primary">r/wakanda</span></p>
+                    <span className="hover:text-primary">r/{userName}</span></p>
             </div>
 
             <div className="px-2">
@@ -68,7 +69,7 @@ return(
             <div className="m-3 flex items-center gap-x-5">
                 <div className="flex items-center gap-x-1">
                     <MessageCircle className="h-4 w-4 text-muted-foreground"/>
-                    <p className="text-muted-foreground font-medium text-xs">31 comments</p>
+                    <p className="text-muted-foreground font-medium text-xs">{commentAmount} comments</p>
                 </div>
 
                 <CopyLink id={id}/>

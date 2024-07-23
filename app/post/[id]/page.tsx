@@ -30,6 +30,9 @@ async function getData(id: string){
                 },
             },
             Comment:{
+                orderBy:{
+                    createdAt: "desc"
+                },
                 select:{
                     id: true,
                     text: true,
@@ -111,7 +114,7 @@ async function PostPage({params}: {params: {id: string}}) {
                 <div className="m-3 flex items-center gap-x-5">
                 <div className="flex items-center gap-x-1">
                     <MessageCircle className="h-4 w-4 text-muted-foreground"/>
-                    <p className="text-muted-foreground font-medium text-xs">32 comments</p>
+                    <p className="text-muted-foreground font-medium text-xs">{data.Comment.length} comments</p>
                 </div>
 
                 <CopyLink id={params.id}/>
@@ -123,7 +126,23 @@ async function PostPage({params}: {params: {id: string}}) {
 
             <div className="flex flex-col gap-y-7">
                 {data.Comment.map((item)=>(
-                    <p key={item.id}>{item.text}</p>
+                    <div key={item.id} className="flex flex-col">
+                        <div className="flex items-center gap-x-3">
+                            <img src={item.User?.imageUrl ? item.User.imageUrl :
+                                "https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg"
+                            }
+                            className="w-7 h-7 rounded-full" 
+                            alt="avatar of user" 
+                            />
+                            <h3 className="text-sm font-semibold">
+                                {item.User?.userName}
+                            </h3>
+                        </div>
+
+                        <p className="ml-10 text-secondary-foreground text-sm tracking-wide">
+                            {item.text}
+                        </p>
+                    </div>
                 ))}
             </div>
             </div>
