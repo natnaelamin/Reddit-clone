@@ -10,10 +10,11 @@ import { Card, CardHeader } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
-import { Cake, Key } from 'lucide-react'
+import { Cake, FileQuestion, Key } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { postcss } from 'tailwindcss'
 
 async function getData(name: string, searchParam: string){
 
@@ -69,14 +70,22 @@ async function SubRedditRoute({params, searchParams}:{params:{id:string}; search
     const {count, data} = await getData(params.id, searchParams.page);
     const {getUser} = getKindeServerSession()
     const user = await getUser()
+    console.log(data?.posts.length)
 
   return (
     <div className='max-w-[1000px] mx-auto flex gap-x-10 mt-4'>
       <div className='w-[65%] flex flex-col gap-y-5'>
         <CreatePostCard/>
 
-        {data?.posts.length === 0 ? (
-            <p>no posts yet</p>
+        {data?.posts.length === (0 || undefined) ? (
+            <div className='flex flex-col justify-center items-center rounded-md border border-dashed text-center p-8 min-h-[300px]'>
+                <div className='flex justify-center items-center rounded-full bg-primary/10 w-10 h-10'>
+                    <FileQuestion className='h-10 w-10 text-primary'/>
+                </div>
+                <h2 className='mt-6 font-semibold text-xl'>
+                    No post have been created yet.
+                </h2>
+            </div>
         ):(
             <>
                 {data?.posts.map((post) =>(

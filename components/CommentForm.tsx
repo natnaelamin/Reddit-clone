@@ -16,8 +16,9 @@ function CommentForm({postId}: iAppProps) {
   return (
     <form action={async (formData) =>{
       await CreateComment(formData);
-      ref.current?.reset()
-    } } className="mt-5">
+      ref.current?.reset();
+      } } ref={ref} 
+      className="mt-5">
         <input type="hidden" name="postId" value={postId} />
         <Label>Comment right here</Label>
         <Textarea

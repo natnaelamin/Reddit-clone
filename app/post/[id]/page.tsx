@@ -30,9 +30,6 @@ async function getData(id: string){
                 },
             },
             Comment:{
-                orderBy:{
-                    createdAt: "desc"
-                },
                 select:{
                     id: true,
                     text: true,
