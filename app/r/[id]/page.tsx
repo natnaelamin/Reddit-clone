@@ -70,7 +70,6 @@ async function SubRedditRoute({params, searchParams}:{params:{id:string}; search
     const {count, data} = await getData(params.id, searchParams.page);
     const {getUser} = getKindeServerSession()
     const user = await getUser()
-    console.log(data?.posts.length)
 
   return (
     <div className='max-w-[1000px] mx-auto flex gap-x-10 mt-4'>
