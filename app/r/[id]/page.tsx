@@ -15,9 +15,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { postcss } from 'tailwindcss'
+import {unstable_noStore as noStore} from "next/cache";
+
 
 async function getData(name: string, searchParam: string){
-
+    noStore();
     const [count, data] = await prisma.$transaction([
         prisma.post.count({
             where:{
