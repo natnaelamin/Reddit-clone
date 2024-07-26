@@ -38,5 +38,8 @@ export async function GET(){
     
     
 
-    return NextResponse.redirect("http://localhost:3000/")
+    return NextResponse.redirect(
+        process.env.NODE_ENV ? 
+        "http://localhost:3000/" : 
+        "https://reddit-clone-iota-eosin.vercel.app/")
 }
