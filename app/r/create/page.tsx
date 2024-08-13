@@ -30,7 +30,7 @@ function SubredditPage() {
           }
     },[state, toast])
   return (
-    <div className="max-w-[1000px] mx-auto mt-4 flex flex-col">
+    <div className="max-w-[1000px] px-2 mx-auto mt-4 flex flex-col">
         <form action={formAction}>
             <h1 className="text-3xl font-extrabold tracking-tight">
                 Create Community

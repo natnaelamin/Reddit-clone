@@ -9,7 +9,6 @@ interface iAppProps{
     postId: string;
 }
 
-
 function CommentForm({postId}: iAppProps) {
   const ref = useRef<HTMLFormElement>(null)
 

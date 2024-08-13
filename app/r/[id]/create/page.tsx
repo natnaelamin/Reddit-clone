@@ -49,8 +49,8 @@ function CreatePostRoute({params}:{params:{id: string}}) {
 
     const createPostReddit = createPost.bind(null, {jsonContent: json})
   return (
-    <div className="max-w-[1000px] mx-auto flex gap-x-10 mt-4">
-      <div className="w-[65%] flex flex-col gap-y-5">
+    <div className="max-w-[1000px] mx-auto grid place-items-center px-1 md:px-0 pb-5 gap-y-5  md:flex md:gap-x-10 mt-4">
+      <div className="md:w-[65%] w-fit flex flex-col gap-y-5 ">
         <h1>
             Subreddit:{" "}
             <Link href={`/r/${params.id}`} className="text-primary">
@@ -103,7 +103,7 @@ function CreatePostRoute({params}:{params:{id: string}}) {
         </TabsContent>
         </Tabs>
       </div>
-      <div className="w-[35%]">
+      <div className="md:w-[35%] w-fit flex justify-center items-center ">
         <Card className="flex flex-col p-4">
             <div className="flex items-center gap-x-2">
                 <Image className="h-10 w-10" src={pfp} alt="pfp"/>

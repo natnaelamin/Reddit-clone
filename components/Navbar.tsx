@@ -23,15 +23,15 @@ export async function Navbar(){
                 <Image
                     src={RedditText}
                     alt="reddit mobile text" 
-                    className="h-10 w-fit" 
+                    className="md:h-10 h-5 w-fit " 
                 />
             </Link>
             <div className="flex items-center gap-x-4">
                 { user? (
                     <UserDropdown userImage={user.picture}/>
                 ):
-                (<div className="flex items-center gap-x-4">
-                    <Button variant="secondary" asChild><RegisterLink postLoginRedirectURL="/">Sign up</RegisterLink></Button>
+                (<div className="flex items-center gap-x-2 md:gap-x-4">
+                    <Button  variant="secondary" asChild><RegisterLink postLoginRedirectURL="/">Sign up</RegisterLink></Button>
                     <Button asChild><LoginLink postLoginRedirectURL="/">Login</LoginLink></Button>
                 </div>)}
                 <ThemeToggle />

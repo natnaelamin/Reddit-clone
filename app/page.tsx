@@ -58,14 +58,14 @@ async function getData(searchParam: string){
 export default function Home({searchParams}: {searchParams: {page: string}}) {
 
   return (
-    <div className="max-w-[1000px] mx-auto mt-4 flex gap-x-10 mb-10">
-      <div className="w-[65%] flex flex-col gap-y-5">
+    <div className="max-w-[1000px] mx-auto mt-4 grid md:flex gap-x-10 mb-10">
+      <div className="md:w-[65%] flex flex-col gap-y-5 md:order-1 order-2 px-1 md:px-0">
         <CreatePostCard/>
         <Suspense fallback={<SuspenseCard />} key={searchParams.page}>
           <ShowItems searchParams={searchParams}/>
         </Suspense>
       </div>
-      <div className="w-[35%]">
+      <div className="md:w-[35%] order-1 md:order-2">
         <Card>
           <Image src={Banner} alt="banner"/>
           <div className="p-2">
