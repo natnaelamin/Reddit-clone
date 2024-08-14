@@ -23,10 +23,10 @@ export async function Navbar(){
                 <Image
                     src={RedditText}
                     alt="reddit mobile text" 
-                    className="md:h-10 h-5 w-fit " 
+                    className="h-10 hidden md:block w-fit" 
                 />
             </Link>
-            <div className="flex items-center gap-x-4">
+            <div className="flex items-center gap-x-4"> 
                 { user? (
                     <UserDropdown userImage={user.picture}/>
                 ):
