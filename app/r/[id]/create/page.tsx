@@ -64,7 +64,7 @@ function CreatePostRoute({params}:{params:{id: string}}) {
         <TabsContent value="post">
             <Card>
                 <form action={createPostReddit}>
-                    <Input type="hidden" name="imageUrl" value={imageUrl ?? undefined}/>
+                    <Input type="hidden" name="imageUrl" value={imageUrl ?? undefined} />
                     <Input type="hidden" name="subName" value={params.id}/>
                     <CardHeader>
                         <Label>Title</Label>

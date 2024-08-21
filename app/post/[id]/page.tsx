@@ -70,8 +70,8 @@ async function getData(id: string){
 async function PostPage({params}: {params: {id: string}}) {
     const data = await getData(params.id)
   return (
-    <div className="max-w-[1200px] mx-auto flex gap-x-10 mt-4 mb-10">
-      <div className="w-[70%] flex flex-col gap-y-5">
+    <div className="max-w-[1200px] mx-auto grid md:flex gap-x-10 mt-4 mb-10">
+      <div className="md:w-[70%] w-full flex flex-col gap-y-5 md:order-1 order-2">
         <Card className="flex p-2">
             <div className="flex flex-col items-center gap-y-2 p-2">
                 <form action={handleVote}>
@@ -148,7 +148,7 @@ async function PostPage({params}: {params: {id: string}}) {
             </div>
         </Card>
       </div>
-      <div className="w-[30%]">
+      <div className="md:w-[30%] w-full md:order-2 order-1">
         <Card>
             <CardHeader className='bg-muted p-4 font-semibold'>
                 About Community
