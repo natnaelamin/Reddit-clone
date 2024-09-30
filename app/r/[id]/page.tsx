@@ -1,8 +1,6 @@
 import { UpdateSubDescription } from '@/app/Actions'
 import prisma from '@/app/lib/db'
 import CreatePostCard from '@/components/CreatePostCard'
-import Pagination from '@/components/Pagination'
-import { PostCard } from '@/components/PostCard'
 import SubDescriptionForm from '@/components/subDescriptionForm'
 import { SaveButton } from '@/components/submitButton'
 import { Button } from '@/components/ui/button'
@@ -16,18 +14,12 @@ import Link from 'next/link'
 import React from 'react'
 import { postcss } from 'tailwindcss'
 import {unstable_noStore as noStore} from "next/cache";
+import SubredditItems from '@/components/SubredditItems'
 
 
-async function getData(name: string, searchParam: string){
-    noStore();
-    const [count, data] = await prisma.$transaction([
-        prisma.post.count({
-            where:{
-                subName: name
-            },
-        }),
+async function getData(name: string){
 
-        prisma.subreddit.findUnique({
+        const data = await prisma.subreddit.findUnique({
             where:{
                 name: name, 
             },
@@ -37,8 +29,6 @@ async function getData(name: string, searchParam: string){
                 description: true,
                 userId: true,
                 posts:{
-                    take: 5,
-                    skip: searchParam ?  (Number(searchParam)- 1) * 5 : 0,
                     select:{
                         title: true,
                         imageString: true,
@@ -63,13 +53,13 @@ async function getData(name: string, searchParam: string){
                 
             },
         })
-    ])
+    
 
-    return {data, count};
+    return data;
 }
 
-async function SubRedditRoute({params, searchParams}:{params:{id:string}; searchParams:{page: string}}) {
-    const {count, data} = await getData(params.id, searchParams.page);
+async function SubRedditRoute({params}:{params:{id:string}}) {
+    const  data = await getData(params.id);
     const {getUser} = getKindeServerSession()
     const user = await getUser()
 
@@ -88,28 +78,7 @@ async function SubRedditRoute({params, searchParams}:{params:{id:string}; search
                 </h2>
             </div>
         ):(
-            <>
-                {data?.posts.map((post) =>(
-                <PostCard 
-                key={post.id}
-                id={post.id}
-                imageString={post.imageString}
-                subName={data.name}
-                title={post.title}
-                commentAmount={post.Comment.length}
-                userName={post.User?.userName as string}
-                jsonContent={post.textContent}
-                voteCount= {post.Vote.reduce((acc, vote)=>{
-                    if(vote.voteType === "UP") return acc + 1;
-                    if(vote.voteType === "DOWN") return acc - 1;
-        
-                    return acc;
-                }, 0)}
-                />
-                ))} 
-
-                <Pagination totalPages={Math.ceil(count / 5)}/>
-            </>
+            <SubredditItems data = {data}/>
         )}
       </div>
       <div className='w-[35%]'>

@@ -10,17 +10,12 @@ import prisma from "./lib/db";
 import { PostCard } from "@/components/PostCard";
 import { Suspense } from "react";
 import SuspenseCard from "@/components/SuspenseCard";
-import Pagination from "@/components/Pagination";
-import {unstable_noStore as noStore} from "next/cache";
+import ShowItems from "@/components/ShowItems";
 
 
-async function getData(searchParam: string){
-  noStore();
-  const [count, data] = await prisma.$transaction([
-    prisma.post.count(),
-    prisma.post.findMany({
-      take: 5,
-      skip: searchParam ?  (Number(searchParam)- 1) * 5 : 0,
+async function getData(){
+  
+    const data = await prisma.post.findMany({
       select:{
         title: true,
         createdAt: true,
@@ -49,20 +44,20 @@ async function getData(searchParam: string){
       orderBy:{
         createdAt: "desc"
       }
-    }),
-  ])
+    })
 
-  return{ data, count};
+  return data;
 }
 
-export default function Home({searchParams}: {searchParams: {page: string}}) {
+export  default async function Home() {
+  const  data = await getData();
 
   return (
     <div className="max-w-[1000px] mx-auto mt-4 grid md:flex gap-x-10 mb-10">
       <div className="md:w-[65%] flex flex-col gap-y-5 md:order-1 order-2 px-1 md:px-0">
         <CreatePostCard/>
-        <Suspense fallback={<SuspenseCard />} key={searchParams.page}>
-          <ShowItems searchParams={searchParams}/>
+        <Suspense fallback={<SuspenseCard />} >
+          <ShowItems data = {data}/>
         </Suspense>
       </div>
       <div className="md:w-[35%] order-1 md:order-2">
@@ -98,31 +93,5 @@ export default function Home({searchParams}: {searchParams: {page: string}}) {
 }
 
 
-async function ShowItems({searchParams}: {searchParams: {page: string}}){
-  const {count, data} = await getData(searchParams.page);
-  
-  return(
-    <>
-        {data.map((post) =>(
-          <PostCard key={post.id} 
-          title={post.title} 
-          id={post.id} 
-          jsonContent={post.textContent} 
-          subName={post.subName as string} 
-          userName={post.User?.userName as string} 
-          imageString={post.imageString}
-          commentAmount={post.Comment.length}
-          voteCount= {post.Vote.reduce((acc, vote)=>{
-            if(vote.voteType === "UP") return acc + 1;
-            if(vote.voteType === "DOWN") return acc - 1;
 
-            return acc;
-          }, 0)}
-        />
-        ))}
-
-        <Pagination totalPages={Math.ceil(count / 5)}/>
-    </>
-  )
-}
 

@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import Link from "next/link";
