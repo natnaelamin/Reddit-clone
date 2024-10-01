@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import CreatePostCard from "@/components/CreatePostCard";
 import prisma from "./lib/db";
-import { PostCard } from "@/components/PostCard";
 import { Suspense } from "react";
 import SuspenseCard from "@/components/SuspenseCard";
 import ShowItems from "@/components/ShowItems";
