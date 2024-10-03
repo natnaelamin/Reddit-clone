@@ -27,6 +27,8 @@ model User{
   posts Post[]
   Vote Vote[]
   Comment Comment[]
+  replies   Reply[]
+  MentionedInReplies Reply[] @relation("MentionedUser")
 }
 
 
@@ -88,4 +90,29 @@ model Comment{
 
   User User? @relation(fields: [userId], references: [id])
   userId String
+
+  replies   Reply[]
 }
+
+
+model Reply {
+  id          String    @id @default(uuid())
+  text        String
+  createdAt   DateTime  @default(now())
+  
+  // Relationship to User
+  userId      String
+  User        User      @relation(fields: [userId], references: [id])
+
+  // Relationship to Comment or another Reply
+  commentId   String?   // This will be populated if it's a reply to a comment
+  Comment     Comment?  @relation(fields: [commentId], references: [id])
+
+  parentId    String?   // This will be populated if it's a reply to another reply
+  ParentReply Reply?    @relation("ReplyToReply", fields: [parentId], references: [id])
+  Replies     Reply[]   @relation("ReplyToReply")
+
+  mentionedUserId String? // The user being replied to
+  MentionedUser    User?  @relation("MentionedUser", fields: [mentionedUserId], references: [id])
+}
+

@@ -10,7 +10,7 @@ function SubredditItems({data}: {data: any}) {
 const [currentPage, setCurrentPage] = useState(1);
 const [postsPerPage, setPostsPerPage] = useState(5);
 
-const postsArray = Array.isArray(data.posts) ? data.posts : [];
+const postsArray =(data.posts) ? data.posts : [];
 
 const lastPostIndex = currentPage * postsPerPage;
 const firstPostIndex = lastPostIndex - postsPerPage;
