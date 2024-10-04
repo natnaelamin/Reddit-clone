@@ -16,7 +16,6 @@ import {unstable_noStore as noStore} from "next/cache";
 
 
 async function getData(id: string){
-    noStore();
     const data= await prisma.post.findUnique({
         where:{
             id: id,
@@ -40,6 +39,25 @@ async function getData(id: string){
                         select:{
                             imageUrl: true,
                             userName: true,
+                        }
+                    },
+                    replies:{
+                        select:{
+                            id: true,
+                            text: true,
+                            User:{
+                                select:{
+                                    imageUrl: true,
+                                    userName: true,
+                                }
+                            },
+                            mentionedUserId: true,
+                            MentionedUser: {
+                                select:{
+                                    userName: true,
+                                }
+                            },
+                            parentId: true,
                         }
                     }
                 }
@@ -126,7 +144,7 @@ async function PostPage({params}: {params: {id: string}}) {
 
             <div className="flex flex-col gap-y-7">
                 {data.Comment.map((item)=>(
-                    <div key={item.id} className="flex flex-col">
+                    <div key={item.id} className="flex flex-col p-3 rounded-md border-2">
                         <div className="flex items-center gap-x-3">
                             <img src={item.User?.imageUrl ? item.User.imageUrl :
                                 "https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg"
@@ -142,6 +160,9 @@ async function PostPage({params}: {params: {id: string}}) {
                         <p className="ml-10 text-secondary-foreground text-sm tracking-wide">
                             {item.text}
                         </p>
+                        <div className="text-right">
+                            <Button>reply</Button>
+                        </div>
                     </div>
                 ))}
             </div>
