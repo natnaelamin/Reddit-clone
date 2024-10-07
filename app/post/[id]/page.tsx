@@ -12,6 +12,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {unstable_noStore as noStore} from "next/cache";
+import ReplyForm from "@/components/ReplyForm";
+import PostSection from "@/components/PostSection";
 
 
 
@@ -142,31 +144,8 @@ async function PostPage({params}: {params: {id: string}}) {
 
             <Separator className="my-5"/>
 
-            <div className="flex flex-col gap-y-7">
-                {data.Comment.map((item)=>(
-                    <div key={item.id} className="flex flex-col p-3 rounded-md border-2">
-                        <div className="flex items-center gap-x-3">
-                            <img src={item.User?.imageUrl ? item.User.imageUrl :
-                                "https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg"
-                            }
-                            className="w-7 h-7 rounded-full" 
-                            alt="avatar of user" 
-                            />
-                            <h3 className="text-sm font-semibold">
-                                {item.User?.userName}
-                            </h3>
-                        </div>
-
-                        <p className="ml-10 text-secondary-foreground text-sm tracking-wide">
-                            {item.text}
-                        </p>
-                        <div className="text-right">
-                            <Button>reply</Button>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            </div>
+            <PostSection data = {data} postId={params.id}/>
+            </div> 
         </Card>
       </div>
       <div className="md:w-[30%] w-full md:order-2 order-1">

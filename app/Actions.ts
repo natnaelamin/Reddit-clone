@@ -208,6 +208,28 @@ export async function CreateComment(formData: FormData){
 
     revalidatePath(`/post/${postId}`)
 }
+export async function CreateReply(formData: FormData){
+    const {getUser} = getKindeServerSession();
+    const user = await getUser()
 
+    if (!user){
+        redirect("/api/auth/login")
+    }
 
+    const replyText = formData.get("reply") as string; // The reply text
+    const commentId = formData.get("commentId") as string | null; // If replying to a comment
+    const parentId = formData.get("parentId") as string | null; // If replying to another reply
+    const mentionedUserId = formData.get("mentionedUserId") as string | null;
+    const MentionedUser = formData.get("MentionedUser") as string | null ;
 
+    const reply = await prisma.reply.create({
+        data: {
+            text: replyText,
+            userId: user.id,
+            commentId: commentId ? commentId : null, // Populated if it's a reply to a comment
+            parentId: parentId ? parentId : null, // Populated if it's a reply to another reply
+            mentionedUserId: mentionedUserId ? mentionedUserId : null, // Populated if a user is mentioned
+            
+        },
+    });
+}
