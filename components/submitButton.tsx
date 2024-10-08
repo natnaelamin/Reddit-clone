@@ -2,7 +2,7 @@
 
 import { useFormStatus } from "react-dom"
 import { Button } from "./ui/button";
-import { ArrowDown, ArrowUp, Loader2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Loader2, Reply } from "lucide-react";
 
 export function SubmitButton({text}:{text: string}){
     const {pending} = useFormStatus();
@@ -71,5 +71,21 @@ export function DownVote(){
             </Button>
         )}
         </>
+    )
+}
+
+export function ReplyButton(){
+    const {pending} = useFormStatus();
+
+    return(
+        <div>
+            {pending ? 
+            <Button disabled>
+                <Loader2 className="mt-1 h-4 w-4 animate-spin"/>
+                please wait
+            </Button>:
+            <Button className="h-6 bg-neutral-950" type="submit" ><Reply className="h-4 w-5 mr-1 "/>Reply</Button>
+            }
+        </div>
     )
 }

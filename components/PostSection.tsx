@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 import ReplyForm from "./ReplyForm";
+import { Reply } from "lucide-react";
 
 interface iAppProps {
   postId: string;
@@ -23,7 +24,7 @@ function PostSection({ data, postId }: iAppProps) {
   return (
     <section className="flex flex-col gap-y-7">
       {data.Comment.map((item: any) => (
-        <div key={item.id} className="flex flex-col p-3 rounded-md bg-muted">
+        <div key={item.id} className="flex flex-col p-3  border-b">
           <div className="flex items-center gap-x-3 ">
             <img
               src={
@@ -40,11 +41,11 @@ function PostSection({ data, postId }: iAppProps) {
           <p className="ml-10 text-secondary-foreground text-sm tracking-wide">{item.text}</p>
 
           <div className="text-right">
-            <Button className="h-6" onClick={() => toggleReplyForm(item.id)}>reply</Button>
+            <Button className="h-6 bg-neutral-950" onClick={() => toggleReplyForm(item.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
           </div>
 
           {replyFormVisible === item.id && (
-            <ReplyForm commentId={item.id} postId={postId} mentionedUserId={item.User?.id} MentionedUser={item.User?.userName}/>
+            <ReplyForm  commentId={item.id} postId={postId} mentionedUserId={item.User?.id} MentionedUser={item.User?.userName}/>
           )}
 
           {/* Render replies if there are any */}
@@ -64,11 +65,11 @@ function PostSection({ data, postId }: iAppProps) {
               </div>
               <p className="ml-10 text-secondary-foreground text-sm tracking-wide">{reply.text}</p>
               <div className="text-right">
-                <Button className="h-6" onClick={() => toggleReplyForm(reply.id)}>reply</Button>
+                <Button className="h-6 bg-neutral-950" onClick={() => toggleReplyForm(reply.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
               </div>
 
               {replyFormVisible === reply.id && (
-                <ReplyForm parentId={reply.id} postId={postId} mentionedUserId={reply.User?.id} MentionedUser={reply.User?.userName}/>
+                <ReplyForm  parentId={reply.id} postId={postId} mentionedUserId={reply.User?.id} MentionedUser={reply.User?.userName}/>
               )}
             </div>
           ))}

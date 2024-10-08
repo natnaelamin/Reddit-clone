@@ -136,6 +136,8 @@ async function PostPage({params}: {params: {id: string}}) {
                     <MessageCircle className="h-4 w-4 text-muted-foreground"/>
                     <p className="text-muted-foreground font-medium text-xs">{data.Comment.length} comments</p>
                 </div>
+                
+                
 
                 <CopyLink id={params.id}/>
             </div>

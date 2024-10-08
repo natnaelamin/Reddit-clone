@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Textarea } from "./ui/textarea";
-import { SubmitButton } from "./submitButton"; // Assuming you have a submit button
+import { ReplyButton, SubmitButton } from "./submitButton"; // Assuming you have a submit button
 import { CreateReply } from "@/app/Actions";
 
 interface ReplyFormProps {
@@ -26,7 +26,7 @@ function ReplyForm({ commentId, parentId, mentionedUserId, postId, MentionedUser
       <input type="hidden" name="postId" value={postId} />
       
       <Textarea placeholder="What are your thoughts?" name="reply" className="mt-1 mb-2 w-full" />
-      <SubmitButton text="Reply" />
+      <ReplyButton />
     </form>
   );
 }
