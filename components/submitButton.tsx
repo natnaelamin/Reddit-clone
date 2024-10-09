@@ -20,6 +20,7 @@ export function SubmitButton({text}:{text: string}){
     )
 }
 
+
 export function SaveButton(){
     const {pending} = useFormStatus();
     return(
@@ -74,7 +75,11 @@ export function DownVote(){
     )
 }
 
-export function ReplyButton(){
+interface ReplyButtonProps {
+    handleShowForm: (commentId: string) => void;
+  }
+
+export function ReplyButton({handleShowForm}: ReplyButtonProps){
     const {pending} = useFormStatus();
 
     return(
@@ -84,7 +89,7 @@ export function ReplyButton(){
                 <Loader2 className="mt-1 h-4 w-4 animate-spin"/>
                 please wait
             </Button>:
-            <Button className="h-6 bg-neutral-950" type="submit" ><Reply className="h-4 w-5 mr-1 "/>Reply</Button>
+            <Button className="h-6 bg-neutral-950"  onClick={()=> handleShowForm("")}><Reply className="h-4 w-5 mr-1 "/>Reply</Button>
             }
         </div>
     )
