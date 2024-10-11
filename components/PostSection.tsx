@@ -12,8 +12,16 @@ interface iAppProps {
 function PostSection({ data, postId }: iAppProps) {
   const [replyFormVisible, setReplyFormVisible] = useState<string | null>(null);
 
-  const handleShowForm = (commentId: string) => {
-    setReplyFormVisible(commentId);
+
+  // Function to toggle form visibility
+
+  const toggleReplyForm = (commentId: string) => {
+    if (replyFormVisible === commentId) {
+      setReplyFormVisible(null); // Hide form if already visible
+    } else {
+      setReplyFormVisible(commentId); // Show form
+    }
+
   }; 
 
   return (
@@ -36,11 +44,12 @@ function PostSection({ data, postId }: iAppProps) {
           <p className="ml-10 text-secondary-foreground text-sm tracking-wide">{item.text}</p>
 
           <div className="text-right">
-            <Button className="h-6 bg-neutral-950" onClick={() => handleShowForm(item.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
+            {replyFormVisible !== item.id ? <Button className="h-6 bg-neutral-950" onClick={() => toggleReplyForm(item.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
+            : <Button className="h-6 bg-red-700" onClick={() => toggleReplyForm(item.id)}>cancel</Button> } 
           </div>
 
           {replyFormVisible === item.id &&  (
-              <ReplyForm handleShowForm={handleShowForm} commentId={item.id} postId={postId} mentionedUserId={item.User?.id} MentionedUser={item.User?.userName}/> 
+              <ReplyForm toggleReplyForm={toggleReplyForm} commentId={item.id} postId={postId} mentionedUserId={item.User?.id} MentionedUser={item.User?.userName}/> 
           )}
 
           {/* Render replies if there are any */}
@@ -60,11 +69,11 @@ function PostSection({ data, postId }: iAppProps) {
               </div>
               <p className="ml-10 text-secondary-foreground text-sm tracking-wide">{reply.text}</p>
               <div className="text-right">
-                <Button className="h-6 bg-neutral-950" onClick={() => handleShowForm(reply.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
+                <Button className="h-6 bg-neutral-950" onClick={() => toggleReplyForm(reply.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
               </div>
 
               {replyFormVisible === reply.id && (
-                <ReplyForm handleShowForm={handleShowForm} parentId={reply.id} postId={postId} mentionedUserId={reply.User?.id} MentionedUser={reply.User?.userName}/>
+                <ReplyForm toggleReplyForm={toggleReplyForm} parentId={reply.id} postId={postId} mentionedUserId={reply.User?.id} MentionedUser={reply.User?.userName}/>
               )}
             </div>
           ))}

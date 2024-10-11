@@ -1,8 +1,9 @@
 "use client"
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Textarea } from "./ui/textarea";
 import { ReplyButton, SubmitButton } from "./submitButton"; // Assuming you have a submit button
 import { CreateReply } from "@/app/Actions";
+import { Button } from "./ui/button";
 
 interface ReplyFormProps {
   commentId?: string;  // If replying to a comment
@@ -10,18 +11,32 @@ interface ReplyFormProps {
   mentionedUserId?: string; // If mentioning a user
   MentionedUser?: string;
   postId: string;      // The post ID for context
-  handleShowForm: (commentId: string) => void;
+  toggleReplyForm: (commentId: string) => void;
 }
 
-function ReplyForm({ commentId, parentId, mentionedUserId, postId, MentionedUser, handleShowForm }: ReplyFormProps) {
-    const ref = useRef<HTMLFormElement>(null)
+function ReplyForm({ commentId, parentId, mentionedUserId, postId, MentionedUser, toggleReplyForm }: ReplyFormProps) {
+  const formRef = useRef<HTMLFormElement>(null);
+    const [inputValue, setInputValue] = useState("");
+
+    const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) =>{
+      setInputValue(event.target.value)
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (formRef.current) {
+        const formData = new FormData(formRef.current);
+        await CreateReply(formData);
+        formRef.current.reset();  
+    }
+
+    if (commentId !== undefined) {
+        toggleReplyForm(commentId);  
+    }
+      
+};
   return (
-    <form action={async (formData) => {
-      await CreateReply(formData);
-      ref.current?.reset();
-      handleShowForm(""); // Close the form after submission
-    }} 
-    ref={ref}  
+    <form onSubmit={handleSubmit}  ref={formRef} 
     className="mt-5">
       {commentId && <input type="hidden" name="commentId" value={commentId} />}
       {parentId && <input type="hidden" name="parentId" value={parentId} />}
@@ -29,8 +44,10 @@ function ReplyForm({ commentId, parentId, mentionedUserId, postId, MentionedUser
       {MentionedUser && <input type="hidden" name="MentionedUser" value={MentionedUser} />}
       <input type="hidden" name="postId" value={postId} />
       
-      <Textarea placeholder="What are your thoughts?" name="reply" className="mt-1 mb-2 w-full" />
-      <ReplyButton handleShowForm={handleShowForm}/>
+      <Textarea placeholder="What are your thoughts?" onChange={handleInput} name="reply" className="mt-1 mb-2 w-full" />
+      <div className="flex justify-end mt-2">
+        <ReplyButton inputValue={inputValue}/>
+      </div>
     </form>
   );
 }

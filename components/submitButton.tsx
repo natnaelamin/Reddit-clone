@@ -76,10 +76,10 @@ export function DownVote(){
 }
 
 interface ReplyButtonProps {
-    handleShowForm: (commentId: string) => void;
+    inputValue: any;
   }
 
-export function ReplyButton({handleShowForm}: ReplyButtonProps){
+export function ReplyButton({inputValue}: ReplyButtonProps){
     const {pending} = useFormStatus();
 
     return(
@@ -89,7 +89,7 @@ export function ReplyButton({handleShowForm}: ReplyButtonProps){
                 <Loader2 className="mt-1 h-4 w-4 animate-spin"/>
                 please wait
             </Button>:
-            <Button className="h-6 bg-neutral-950"  onClick={()=> handleShowForm("")}><Reply className="h-4 w-5 mr-1 "/>Reply</Button>
+            <Button className="h-6 bg-neutral-950" disabled={!inputValue} type="submit"><Reply className="h-4 w-5 mr-1 "/>Reply</Button>
             }
         </div>
     )
