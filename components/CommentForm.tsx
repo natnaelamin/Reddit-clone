@@ -11,6 +11,7 @@ interface iAppProps{
 
 function CommentForm({postId}: iAppProps) {
   const ref = useRef<HTMLFormElement>(null)
+  
 
   return (
     <form action={async (formData) =>{
@@ -20,7 +21,7 @@ function CommentForm({postId}: iAppProps) {
       className="mt-5">
         <input type="hidden" name="postId" value={postId} />
         <Label>Comment right here</Label>
-        <Textarea
+        <Textarea required
         placeholder="What are your thoughts?"
         name="Comment"
         className="mt-1 mb-2 w-full"

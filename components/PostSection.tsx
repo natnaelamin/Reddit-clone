@@ -27,7 +27,7 @@ function PostSection({ data, postId }: iAppProps) {
   return (
     <section className="flex flex-col gap-y-7">
       {data.Comment.map((item: any) => (
-        <div key={item.id} className="flex flex-col p-3  border-b">
+        <div key={item.id} className="flex flex-col p-0 sm:p-3  border-b">
           <div className="flex items-center gap-x-3 ">
             <img
               src={

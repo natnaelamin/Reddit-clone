@@ -92,61 +92,59 @@ async function PostPage({params}: {params: {id: string}}) {
   return (
     <div className="max-w-[1200px] mx-auto grid md:flex gap-x-10 mt-4 mb-10">
       <div className="md:w-[70%] w-full flex flex-col gap-y-5 md:order-1 order-2">
-        <Card className="flex p-2">
-            <div className="flex flex-col items-center gap-y-2 p-2">
-                <form action={handleVote}>
-                    <input type="hidden" name="voteDirection" value="UP" />
-                    <input type="hidden" name="postId" value={data.id} />
-                    <UpVote />
-                </form>
-                {data.Vote.reduce((acc, vote)=>{
-                if(vote.voteType === "UP") return acc + 1;
-                if(vote.voteType === "DOWN") return acc - 1;
-    
-                return acc;
-                }, 0)}
-                <form action={handleVote}>
-                    <input type="hidden" name="voteDirection" value="DOWN" />
-                    <input type="hidden" name="postId" value={data.id} />
-                    <DownVote />
-                </form>
-            </div>
-
-            <div className="p-2 w-full">
-                <p className="text-sm text-muted-foreground">
-                    Posted by u/{data.User?.userName}
-                </p>
-
-                <h1 className="font-medium mt-1 text-lg">{data.title}</h1>
-
-                {data.imageString && (
-                    <Image
-                    src={data.imageString}
-                    alt="user image"
-                    height={400}
-                    width={500}
-                    className="w-full h-auto object-contain mt-2"
-                    />
-                )}
-
-                {data.textContent && <RenderToJson data={data.textContent}/>}
-
-                <div className="m-3 flex items-center gap-x-5">
-                <div className="flex items-center gap-x-1">
-                    <MessageCircle className="h-4 w-4 text-muted-foreground"/>
-                    <p className="text-muted-foreground font-medium text-xs">{data.Comment.length} comments</p>
+        <Card className="p-2">
+            <div className="flex p-2">
+                <div className="flex flex-col items-center gap-y-2 p-2">
+                    <form action={handleVote}>
+                        <input type="hidden" name="voteDirection" value="UP" />
+                        <input type="hidden" name="postId" value={data.id} />
+                        <UpVote />
+                    </form>
+                    {data.Vote.reduce((acc, vote)=>{
+                    if(vote.voteType === "UP") return acc + 1;
+                    if(vote.voteType === "DOWN") return acc - 1;
+        
+                    return acc;
+                    }, 0)}
+                    <form action={handleVote}>
+                        <input type="hidden" name="voteDirection" value="DOWN" />
+                        <input type="hidden" name="postId" value={data.id} />
+                        <DownVote />
+                    </form>
                 </div>
-                
-                
 
-                <CopyLink id={params.id}/>
-            </div>
+                <div className="p-0 sm:p-2 w-full">
+                    <p className="text-sm text-muted-foreground">
+                        Posted by u/{data.User?.userName}
+                    </p>
 
-            <CommentForm postId={params.id}/>
+                    <h1 className="font-medium mt-1 text-lg">{data.title}</h1>
 
-            <Separator className="my-5"/>
+                    {data.imageString && (
+                        <Image
+                        src={data.imageString}
+                        alt="user image"
+                        height={400}
+                        width={500}
+                        className="w-full h-auto object-contain mt-2"
+                        />
+                    )}
 
-            <PostSection data = {data} postId={params.id}/>
+                    {data.textContent && <RenderToJson data={data.textContent}/>}
+
+                    <div className="m-3 flex items-center gap-x-5">
+                        <div className="flex items-center gap-x-1">
+                            <MessageCircle className="h-4 w-4 text-muted-foreground"/>
+                            <p className="text-muted-foreground font-medium text-xs">{data.Comment.length} comments</p>
+                        </div>
+                        <CopyLink id={params.id}/>
+                    </div>
+                </div>
+            </div> 
+            <div>
+                <CommentForm postId={params.id}/>
+                <Separator className="my-5"/>
+                <PostSection data = {data} postId={params.id}/>
             </div> 
         </Card>
       </div>
