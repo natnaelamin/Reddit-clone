@@ -29,6 +29,7 @@ model User{
   Comment Comment[]
   replies   Reply[]
   MentionedInReplies Reply[] @relation("MentionedUser")
+  CommentVote CommentVote[]
 }
 
 
@@ -77,6 +78,19 @@ model Vote{
 
   voteType TypeOfVote
 
+}
+
+model CommentVote{
+  id String @id @default(uuid())
+
+  User User? @relation(fields: [userId], references: [id])
+  userId String
+
+  commentId   String?   
+  Comment     Comment?  @relation(fields: [commentId], references: [id])
+
+  voteType TypeOfVote
+
 
 }
 
@@ -92,6 +106,7 @@ model Comment{
   userId String
 
   replies   Reply[]
+  CommentVote CommentVote[]
 }
 
 

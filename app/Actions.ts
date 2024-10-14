@@ -187,6 +187,60 @@ export async function handleVote(formData: FormData){
     return revalidatePath("/")
 }
 
+
+
+export async function handleCommentVote(formData: FormData){
+    const {getUser} = getKindeServerSession();
+    const user = await getUser()
+
+    if (!user){
+        redirect("/api/auth/login")
+    }
+
+    const commentId = formData.get("commentId") as string;
+    
+    const voteDirection = formData.get("voteDirection") as TypeOfVote;
+
+    const vote = await prisma.commentVote.findFirst({
+        where:{
+            commentId: commentId,
+            userId: user.id,
+        },
+    });
+
+    if(vote){
+        if(vote.voteType === voteDirection){
+            await prisma.commentVote.delete({
+                where:{
+                    id: vote.id,
+                },
+            });
+            return revalidatePath("/")
+        } else {
+            await prisma.commentVote.update({
+                where:{
+                    id: vote.id,
+                },
+                data:{
+                    voteType: voteDirection,
+                },
+            });
+            return revalidatePath("/")
+        }
+    }
+
+    await prisma.commentVote.create({
+        data:{
+            voteType: voteDirection,
+            userId: user.id,
+            commentId: commentId,
+        },
+    });
+    return revalidatePath("/")
+}
+
+
+
 export async function CreateComment(formData: FormData){
     const {getUser} = getKindeServerSession();
     const user = await getUser()

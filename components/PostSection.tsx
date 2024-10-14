@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { Button } from "./ui/button";
 import ReplyForm from "./ReplyForm";
 import { Reply } from "lucide-react";
+import { handleCommentVote, handleVote } from "@/app/Actions";
+import { DownVote, UpVote } from "./submitButton";
 
 interface iAppProps {
   postId: string;
@@ -43,7 +45,27 @@ function PostSection({ data, postId }: iAppProps) {
 
           <p className="ml-10 text-secondary-foreground text-sm tracking-wide">{item.text}</p>
 
-          <div className="text-right">
+          <div className="justify-end flex gap-x-3">
+                <div className="flex items-center gap-x-2 p-2">
+                    <form action={handleCommentVote}>
+                        <input type="hidden" name="voteDirection" value="UP" />
+                        <input type="hidden" name="commentId" value={item.id} />
+                       
+                        <UpVote />
+                    </form>
+                    {item?.CommentVote.reduce((acc: number, vote: any)=>{
+                    if(vote.voteType === "UP") return acc + 1;
+                    if(vote.voteType === "DOWN") return acc - 1;
+        
+                    return acc;
+                    }, 0)}
+                    <form action={handleCommentVote}>
+                        <input type="hidden" name="voteDirection" value="DOWN" />
+                        <input type="hidden" name="commentId" value={item.id} />
+                        
+                        <DownVote />
+                    </form>
+                </div>
             {replyFormVisible !== item.id ? <Button className="h-6 bg-neutral-950" onClick={() => toggleReplyForm(item.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
             : <Button className="h-6 bg-red-700" onClick={() => toggleReplyForm(item.id)}>cancel</Button> } 
           </div>
