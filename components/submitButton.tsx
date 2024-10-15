@@ -45,12 +45,12 @@ export function UpVote(){
     return(
         <>
         {pending ? (
-            <Button variant="outline" size="icon" disabled>
-                <Loader2 className="w-4 h-4 animate-spin"/>
+            <Button variant="outline" size="icon" className="border-none" disabled>
+                <Loader2 className=" animate-spin" />
             </Button>
         ): (
-            <Button variant="outline" size="sm" type="submit">
-                <ArrowUp className="h-4 w-4"/>
+            <Button variant="outline"  className="border-none p-0 h-10 w-8" type="submit">
+                <ArrowUp className="h-6 w-4"/>
             </Button>
         )}
         </>
@@ -63,12 +63,12 @@ export function DownVote(){
     return(
         <>
         {pending ? (
-            <Button variant="outline" size="icon" disabled>
+            <Button variant="outline" size="sm" className="border-none " disabled>
                 <Loader2 className="w-4 h-4 animate-spin"/>
             </Button>
         ): (
-            <Button variant="outline" size="sm" type="submit">
-                <ArrowDown className="h-4 w-4"/>
+            <Button variant="outline" className="border-none p-0 h-10 w-8" type="submit">
+                <ArrowDown className="h-6 w-4"/>
             </Button>
         )}
         </>

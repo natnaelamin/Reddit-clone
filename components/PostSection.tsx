@@ -29,7 +29,7 @@ function PostSection({ data, postId }: iAppProps) {
   return (
     <section className="flex flex-col gap-y-7">
       {data.Comment.map((item: any) => (
-        <div key={item.id} className="flex flex-col p-0 sm:p-3  border-b">
+        <div key={item.id} className="flex flex-col p-0 sm:p-3  border-l-2">
           <div className="flex items-center gap-x-3 ">
             <img
               src={
@@ -45,7 +45,7 @@ function PostSection({ data, postId }: iAppProps) {
 
           <p className="ml-10 text-secondary-foreground text-sm tracking-wide">{item.text}</p>
 
-          <div className="justify-end flex gap-x-3">
+          <div className="justify-end flex gap-x-3 items-center">
                 <div className="flex items-center gap-x-2 p-2">
                     <form action={handleCommentVote}>
                         <input type="hidden" name="voteDirection" value="UP" />
@@ -66,7 +66,7 @@ function PostSection({ data, postId }: iAppProps) {
                         <DownVote />
                     </form>
                 </div>
-            {replyFormVisible !== item.id ? <Button className="h-6 bg-neutral-950" onClick={() => toggleReplyForm(item.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
+            {replyFormVisible !== item.id ? <Button className="h-6 border-none" variant="outline" onClick={() => toggleReplyForm(item.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
             : <Button className="h-6 bg-red-700" onClick={() => toggleReplyForm(item.id)}>cancel</Button> } 
           </div>
 
@@ -91,7 +91,7 @@ function PostSection({ data, postId }: iAppProps) {
               </div>
               <p className="ml-10 text-secondary-foreground text-sm tracking-wide">{reply.text}</p>
               <div className="text-right">
-                <Button className="h-6 bg-neutral-950" onClick={() => toggleReplyForm(reply.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
+                <Button className="h-6 border-none" variant="outline" onClick={() => toggleReplyForm(reply.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
               </div>
 
               {replyFormVisible === reply.id && (

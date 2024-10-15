@@ -6,11 +6,11 @@ import { CreateReply } from "@/app/Actions";
 import { Button } from "./ui/button";
 
 interface ReplyFormProps {
-  commentId?: string;  // If replying to a comment
-  parentId?: string;   // If replying to a reply
-  mentionedUserId?: string; // If mentioning a user
+  commentId?: string;  
+  parentId?: string;   
+  mentionedUserId?: string;
   MentionedUser?: string;
-  postId: string;      // The post ID for context
+  postId: string;     
   toggleReplyForm: (commentId: string) => void;
 }
 

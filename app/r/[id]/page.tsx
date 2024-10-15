@@ -10,7 +10,6 @@ import { Cake, FileQuestion, Key } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { postcss } from 'tailwindcss'
 import SubredditItems from '@/components/SubredditItems'
 
 
