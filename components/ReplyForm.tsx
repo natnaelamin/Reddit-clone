@@ -32,6 +32,8 @@ function ReplyForm({ commentId, parentId, mentionedUserId, postId, MentionedUser
 
     if (commentId !== undefined) {
         toggleReplyForm(commentId);  
+    } else if(parentId !== undefined){
+      toggleReplyForm(parentId)
     }
       
 };

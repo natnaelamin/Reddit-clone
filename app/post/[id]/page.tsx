@@ -16,10 +16,11 @@ import PostSection from "@/components/PostSection";
 
 
 async function getData(id: string){
-    const data= await prisma.post.findUnique({
-        where:{
+    const data = await prisma.post.findUnique({
+        where: {
             id: id,
-        }, select:{
+        },
+        select: {
             createdAt: true,
             title: true,
             id: true,
@@ -27,65 +28,83 @@ async function getData(id: string){
             textContent: true,
             subName: true,
             Vote: {
-                select:{
+                select: {
                     voteType: true,
                 },
             },
-            Comment:{
-                select:{
+            Comment: {
+                select: {
                     id: true,
                     text: true,
                     CommentVote: {
-                        select:{
+                        select: {
                             voteType: true,
                         },
                     },
-                    User:{
-                        select:{
+                    User: {
+                        select: {
                             imageUrl: true,
                             userName: true,
                         }
                     },
-                    replies:{
-                        select:{
+                    replies: {
+                        select: {
                             id: true,
                             text: true,
-                            User:{
-                                select:{
+                            User: {
+                                select: {
                                     imageUrl: true,
                                     userName: true,
                                 }
                             },
                             mentionedUserId: true,
                             MentionedUser: {
-                                select:{
+                                select: {
                                     userName: true,
                                 }
                             },
                             parentId: true,
+                            Replies: { // Recursively fetch nested replies
+                                select: {
+                                    id: true,
+                                    text: true,
+                                    User: {
+                                        select: {
+                                            imageUrl: true,
+                                            userName: true,
+                                        }
+                                    },
+                                    mentionedUserId: true,
+                                    MentionedUser: {
+                                        select: {
+                                            userName: true,
+                                        }
+                                    },
+                                    parentId: true,
+                                }
+                            }
                         }
                     }
                 }
             },
-            Subreddit:{
-                select:{
+            Subreddit: {
+                select: {
                     name: true,
                     createdAt: true,
                     description: true,
                 },
             },
             User: {
-                select:{
+                select: {
                     userName: true,
                 }
             }
         }
+    });
 
-    })
-
-    if(!data){
-        return notFound()
-    };
+    if (!data) {
+        return notFound();
+    }
 
     return data;
 }

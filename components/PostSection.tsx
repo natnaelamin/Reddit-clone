@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 import ReplyForm from "./ReplyForm";
@@ -14,17 +15,43 @@ interface iAppProps {
 function PostSection({ data, postId }: iAppProps) {
   const [replyFormVisible, setReplyFormVisible] = useState<string | null>(null);
 
-
-  // Function to toggle form visibility
-
   const toggleReplyForm = (commentId: string) => {
     if (replyFormVisible === commentId) {
       setReplyFormVisible(null); // Hide form if already visible
     } else {
       setReplyFormVisible(commentId); // Show form
     }
-
   }; 
+
+  const renderReplies = (replies: any[]) => {
+    return replies.map((reply: any) => (
+      <div key={reply.id} className="ml-10 border-l-2 pl-2 mt-2">
+        <div className="flex items-center gap-x-3 ">
+          <img
+            src={
+              reply.User?.imageUrl
+                ? reply.User.imageUrl
+                : "https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg"
+            }
+            className="w-7 h-7 rounded-full"
+            alt="avatar of user"
+          />
+          <h3 className="text-sm font-semibold">{reply.User?.userName}</h3>
+        </div>
+        <p className="ml-10 text-secondary-foreground text-sm tracking-wide">{reply.text}</p>
+        <div className="text-right">
+          <Button className="h-6 border-none" variant="outline" onClick={() => toggleReplyForm(reply.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
+        </div>
+
+        {replyFormVisible === reply.id && (
+          <ReplyForm toggleReplyForm={toggleReplyForm} parentId={reply.id} postId={postId} mentionedUserId={reply.User?.id} MentionedUser={reply.User?.userName}/>
+        )}
+
+        {/* Recursively render nested replies */}
+        {reply.Replies && renderReplies(reply.Replies)}
+      </div>
+    ));
+  };
 
   return (
     <section className="flex flex-col gap-y-7">
@@ -50,19 +77,16 @@ function PostSection({ data, postId }: iAppProps) {
                     <form action={handleCommentVote}>
                         <input type="hidden" name="voteDirection" value="UP" />
                         <input type="hidden" name="commentId" value={item.id} />
-                       
                         <UpVote />
                     </form>
                     {item?.CommentVote.reduce((acc: number, vote: any)=>{
                     if(vote.voteType === "UP") return acc + 1;
                     if(vote.voteType === "DOWN") return acc - 1;
-        
                     return acc;
                     }, 0)}
                     <form action={handleCommentVote}>
                         <input type="hidden" name="voteDirection" value="DOWN" />
                         <input type="hidden" name="commentId" value={item.id} />
-                        
                         <DownVote />
                     </form>
                 </div>
@@ -97,6 +121,9 @@ function PostSection({ data, postId }: iAppProps) {
               {replyFormVisible === reply.id && (
                 <ReplyForm toggleReplyForm={toggleReplyForm} parentId={reply.id} postId={postId} mentionedUserId={reply.User?.id} MentionedUser={reply.User?.userName}/>
               )}
+
+              {/* Recursively render nested replies */}
+              {reply.Replies && renderReplies(reply.Replies)}
             </div>
           ))}
         </div>
