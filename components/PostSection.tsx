@@ -23,7 +23,7 @@ function PostSection({ data, postId }: iAppProps) {
     }
   }; 
 
-  const renderReplies = (replies: any[]) => {
+  const renderReplies = (replies: any[], depth: number) => {
     return replies.map((reply: any) => (
       <div key={reply.id} className="ml-10 border-l-2 pl-2 mt-2">
         <div className="flex items-center gap-x-3 ">
@@ -40,7 +40,7 @@ function PostSection({ data, postId }: iAppProps) {
         </div>
         <p className="ml-10 text-secondary-foreground text-sm tracking-wide">{reply.text}</p>
         <div className="text-right">
-          <Button className="h-6 border-none" variant="outline" onClick={() => toggleReplyForm(reply.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>
+          {depth < 1 && <Button className="h-6 border-none" variant="outline" onClick={() => toggleReplyForm(reply.id)}><Reply className="h-4 w-5 mr-1 "/>reply</Button>}
         </div>
 
         {replyFormVisible === reply.id && (
@@ -48,7 +48,7 @@ function PostSection({ data, postId }: iAppProps) {
         )}
 
         {/* Recursively render nested replies */}
-        {reply.Replies && renderReplies(reply.Replies)}
+        {reply.Replies && renderReplies(reply.Replies, depth + 1)}
       </div>
     ));
   };
@@ -123,7 +123,7 @@ function PostSection({ data, postId }: iAppProps) {
               )}
 
               {/* Recursively render nested replies */}
-              {reply.Replies && renderReplies(reply.Replies)}
+              {reply.Replies && renderReplies(reply.Replies, 1)}
             </div>
           ))}
         </div>
