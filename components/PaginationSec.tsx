@@ -43,7 +43,7 @@ import {
         <Pagination>
             <PaginationContent>
                 <PaginationItem>
-                <PaginationPrevious onClick={handlePrevPage} />
+                <PaginationPrevious onClick={handlePrevPage} className="pointer"/>
                 </PaginationItem>
 
                 {pageNumbers.map((page) => (
@@ -51,14 +51,14 @@ import {
                     key={page}
                     className={currentPage === page ? "bg-secondary" : ""}
                   >
-                    <PaginationLink onClick={() => setCurrentPage(page)}>
+                    <PaginationLink onClick={() => setCurrentPage(page)} className="pointer">
                       {page}
                     </PaginationLink>
                   </PaginationItem>
                 ))}
 
                 <PaginationItem>
-                <PaginationNext onClick={handleNextPage} />
+                <PaginationNext onClick={handleNextPage} className="pointer"/>
                 </PaginationItem>
             </PaginationContent>
         </Pagination>

@@ -60,7 +60,7 @@ async function SubRedditRoute({params}:{params:{id:string}}) {
     const user = await getUser()
 
   return (
-    <div className='max-w-[1000px] mx-auto flex gap-x-10 mt-4'>
+    <div className='max-w-[1000px] mx-auto grid md:flex md:gap-x-10 gap-y-10 mt-4'>
       <div className='w-[65%] flex flex-col gap-y-5'>
         <CreatePostCard/>
 
