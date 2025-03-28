@@ -60,8 +60,8 @@ async function SubRedditRoute({params}:{params:{id:string}}) {
     const user = await getUser()
 
   return (
-    <div className='max-w-[1000px] mx-auto grid md:flex md:gap-x-10 gap-y-10 mt-4'>
-      <div className='w-[65%] flex flex-col gap-y-5'>
+    <div className='max-w-[1000px] mx-auto flex flex-col-reverse md:flex md:flex-row md:gap-x-10 gap-y-10 mt-4'>
+      <div className='md:w-[65%] flex flex-col gap-y-5'>
         <CreatePostCard/>
 
         {data?.posts.length === (0 || undefined) ? (
@@ -77,7 +77,7 @@ async function SubRedditRoute({params}:{params:{id:string}}) {
             <SubredditItems data = {data}/>
         )}
       </div>
-      <div className='w-[35%]'>
+      <div className='md:w-[35%]'>
         <Card>
             <CardHeader className='bg-muted p-4 font-semibold'>
                 About Community
